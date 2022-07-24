@@ -56,7 +56,7 @@ def delete_project(request, pk):
     context = {
         'object': project
     }
-    return render(request, 'project_delete.html', context)
+    return render(request, 'delete.html', context)
 
 
 def projects_by_tag(request, tag_slug):
