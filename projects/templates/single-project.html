@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Шаблон для отдельного проекта</title>
+    <title>Detail</title>
 </head>
 <body>
-<h1>Подробная информация о проекте</h1>
-<h3>Проект #{{ project.id }}</h3>
+<h1>Detailed information about the project</h1>
+<h3>Project #{{ project.id }}</h3>
 <p>{{ project.title }}</p>
 <br>
+<ul>
+    {% for tag in project.tags.all %}
+    <li>{{ tag }}</li>
+    {% endfor %}
+</ul>
 <em>{{ project.description }}</em>
+
+<a href="{% url 'delete-project' project.id %}">Delete project</a>
 </body>
 </html>
 

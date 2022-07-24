@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <title>Шаблон для вывода проектов</title>
+   <title>All</title>
 </head>
 <body>
-<h2>Здесь будут все проекты</h2>
+<h2>ALL Projects</h2>
 {% for project in projects %}
-<p>Номер проекта: #{{ project.id }}</p>
-<h3>Название проекта: <a href="{% url 'project' project.id %}">{{ project.title }}</a></h3>
+<p>Number project: #{{ project.id }}</p>
+<h3>Title: <a href="{% url 'project' project.id %}">{{ project.title }}</a></h3>
 <em>{{ project.description }}</em>
+<h4><a href="{% url 'update-project' project.id %}">Redacting project</a></h4>
 {% endfor %}
+
+<strong><a href="{% url 'create-project' %}">Add project</a></strong>
 </body>
 </html>
