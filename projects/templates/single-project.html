@@ -7,10 +7,11 @@
 <h1>Detailed information about the project</h1>
 <h3>Project #{{ project.id }}</h3>
 <p>{{ project.title }}</p>
+<img src="{{ project.image.url }}" />
 <br>
 <ul>
     {% for tag in project.tags.all %}
-    <li>{{ tag }}</li>
+    <li><a href="{% url 'tag' tag.slug %}" class="tag tag--pill tag--sub">{{ tag }}</a></li>
     {% endfor %}
 </ul>
 <em>{{ project.description }}</em>

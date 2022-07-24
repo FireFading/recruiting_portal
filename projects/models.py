@@ -16,6 +16,7 @@ class Project(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField()
     description = models.TextField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, default='default.jpg', upload_to='project_images')
     tags = models.ManyToManyField(Tag, blank=True)
     total_votes = models.IntegerField(default=0, null=True, blank=True)
     votes_ratio = models.IntegerField(default=0, null=True, blank=True)
