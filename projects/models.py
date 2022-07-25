@@ -50,7 +50,7 @@ class Project(models.Model):
         self.save()
 
     def save(self, *args, **kwargs):
-        value = self.name
+        value = self.title
         self.slug = slugify(value, allow_unicode=True)
         super().save(*args, **kwargs)
         

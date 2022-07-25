@@ -1,18 +1,54 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
-   {% for project in projects %}
-      <p>Number project: #{{ project.id }}</p>
-      <h3>Title: <a href="{% url 'project' project.id %}">{{ project.title }}</a></h3>
-      {% for tag in project.tags.all %}
-         <a href="{% url 'tag' tag.slug %}" class="tag tag--pill tag--main">{{ tag }}</a>
-      {% endfor %}
-      <em>{{ project.description }}</em>
-      <h4><a href="{% url 'update-project' project.id %}">Redacting project</a></h4>
-   {% endfor %}
+<section class="py-5 text-center container" style="background-image: url('/static/img/background_4.jpg')">
+   <div class="row py-lg-5">
+     <div class="col-lg-6 col-md-8 mx-auto">
+       <h1 class="fw-light">Recruting portal</h1>
+       <p class="lead" style="color:#2B2A2F;">Find the best programmer for your project</p>
+       <p>
+         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="{% url 'projects' %}" method="get">
+            <input type="search" class="form-control me-2" placeholder="Search project..." aria-label="Search" value="{{ search_query }}" name="search_query">
+         </form>
+       </p>
+     </div>
+   </div>
+ </section>
 
-   <strong><a href="{% url 'create-project' %}">Add project</a></strong>
+   
+
+   <div class="album py-5 bg-light">
+      <div class="container">
+  
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+         {% for project in projects %}
+          <div class="col">
+            <div class="card shadow-sm">
+              <img src="{{ project.image.url }}" />
+  
+              <div class="card-body">
+               <h2>{{ project.title }}</h2>
+                <p class="card-text">{{ project.description|slice:"150" }}..</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary"><a href="{% url 'project' project.id %}" style="text-decoration:none;">View</a></button>
+                    {% if request.user.profile.id == project.owner.id %}
+                     <button type="button" class="btn btn-sm btn-outline-secondary"><a href="{% url 'update-project' project.id %}" style="text-decoration:none;">Edit</a></button>
+                    {% endif %}
+                  </div>
+                  <small class="text-muted">{{ project.created }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+         {% endfor %}
+
+        </div>
+      </div>
+    </div>
 
    {% include 'pagination.html' with queryset=projects custom_range=custom_range %}
 

@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 
 from .models import Profile, Skill
-from .forms import ProfileForm, SkillForm, CustomUserCreationForm
+from .forms import ProfileForm, SkillForm, CustomUserCreationForm, MessageForm
 from .utils import paginateProfiles, searchProfiles
 
 
@@ -57,7 +57,7 @@ def user_account(request):
         'skills': skills,
         'projects': projects,
     }
-    return render(request, 'account.html', context)
+    return render(request, 'user_profile.html', context)
 
 
 @login_required(login_url='login')
@@ -182,3 +182,52 @@ def logout_user(request):
     logout(request)
     messages.info(request, 'You successfully logged out')
     return redirect('login')
+
+
+@login_required(login_url='login')
+def inbox(request):
+    profile = request.user.profile
+    messageRequests = profile.messages.all()
+    unreadCount = messageRequests.filter(is_read=False).count()
+    context = {'messageRequests': messageRequests, 'unreadCount': unreadCount}
+    return render(request, 'inbox.html', context)
+
+
+@login_required(login_url='login')
+def viewMessage(request, pk):
+    profile = request.user.profile
+    message = profile.messages.get(id=pk)
+    if message.is_read == False:
+        message.is_read = True
+        message.save()
+    context = {'message': message}
+    return render(request, 'message.html', context)
+
+
+
+def createMessage(request, username):
+    recipient = Profile.objects.get(username=username)
+    form = MessageForm()
+
+    try:
+        sender = request.user.profile
+    except:
+        sender = None
+
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = sender
+            message.recipient = recipient
+
+            if sender:
+                message.name = sender.name
+                message.email = sender.email
+            message.save()
+
+            messages.success(request, 'Your message was successfully sent!')
+            return redirect('user-profile', username=recipient.username)
+
+    context = {'recipient': recipient, 'form': form}
+    return render(request, 'message_form.html', context)

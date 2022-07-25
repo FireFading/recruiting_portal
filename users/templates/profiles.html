@@ -1,1 +1,52 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <section class="py-5 text-center container" style="background-image: url('/static/img/background_4.jpg')">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">Recruting portal</h1>
+        <p class="lead" style="color:#2B2A2F;">Find the best programmer for your project</p>
+        <p>
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="{% url 'profiles' %}" method="get">
+                <input type="search" class="form-control me-2" placeholder="Search programmer..." aria-label="Search" value="{{ search_query }}" name="search_query">
+            </form>
+        </p>
+      </div>
+    </div>
+  </section>
+
+   
+
+   <div class="album py-5 bg-light">
+      <div class="container">
+  
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+         {% for profile in profiles %}
+          <div class="col">
+            <div class="card shadow-sm">
+              <img src="{{ profile.image.url }}" />
+  
+              <div class="card-body">
+               <h2>{{ profile.name }}</h2>
+                <p class="card-text">{{ project.description }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary"><a href="{% url 'profile' profile.id %}" style="text-decoration:none;">View</a></button>
+                  </div>
+                  <small class="text-muted">{{ project.created }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+         {% endfor %}
+
+        </div>
+      </div>
+    </div>
+
+   {% include 'pagination.html' with queryset=profiles custom_range=custom_range %}
+
+{% endblock %}
