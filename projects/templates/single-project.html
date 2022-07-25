@@ -1,23 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Detail</title>
-</head>
-<body>
-<h1>Detailed information about the project</h1>
-<h3>Project #{{ project.id }}</h3>
-<p>{{ project.title }}</p>
-<img src="{{ project.image.url }}" />
-<br>
-<ul>
-    {% for tag in project.tags.all %}
-    <li><a href="{% url 'tag' tag.slug %}" class="tag tag--pill tag--sub">{{ tag }}</a></li>
-    {% endfor %}
-</ul>
-<em>{{ project.description }}</em>
+{% extends 'base.html' %}
 
-<a href="{% url 'delete-project' project.id %}">Delete project</a>
-</body>
-</html>
+{% block content %}
+    <h1>Detailed information about the project</h1>
+    <h3>Project #{{ project.id }}</h3>
+    <p>{{ project.title }}</p>
+    <img src="{{ project.image.url }}" />
+    <br>
+    <ul>
+        {% for tag in project.tags.all %}
+        <li><a href="{% url 'tag' tag.slug %}" class="tag tag--pill tag--sub">{{ tag }}</a></li>
+        {% endfor %}
+    </ul>
+    <em>{{ project.description }}</em>
+
+    <a href="{% url 'delete-project' project.id %}">Delete project</a>
+
+{% endblock %}
 
     

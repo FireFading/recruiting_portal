@@ -1,21 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-   <title>All</title>
-</head>
-<body>
-<h2>ALL Projects</h2>
+{% extends 'base.html' %}
 
-{% for project in projects %}
-   <p>Number project: #{{ project.id }}</p>
-   <h3>Title: <a href="{% url 'project' project.id %}">{{ project.title }}</a></h3>
-   {% for tag in project.tags.all %}
-      <a href="{% url 'tag' tag.slug %}" class="tag tag--pill tag--main">{{ tag }}</a>
+{% block content %}
+
+   {% for project in projects %}
+      <p>Number project: #{{ project.id }}</p>
+      <h3>Title: <a href="{% url 'project' project.id %}">{{ project.title }}</a></h3>
+      {% for tag in project.tags.all %}
+         <a href="{% url 'tag' tag.slug %}" class="tag tag--pill tag--main">{{ tag }}</a>
+      {% endfor %}
+      <em>{{ project.description }}</em>
+      <h4><a href="{% url 'update-project' project.id %}">Redacting project</a></h4>
    {% endfor %}
-   <em>{{ project.description }}</em>
-   <h4><a href="{% url 'update-project' project.id %}">Redacting project</a></h4>
-{% endfor %}
 
-<strong><a href="{% url 'create-project' %}">Add project</a></strong>
-</body>
-</html>
+   <strong><a href="{% url 'create-project' %}">Add project</a></strong>
+
+   {% include 'pagination.html' with queryset=projects custom_range=custom_range %}
+
+{% endblock %}

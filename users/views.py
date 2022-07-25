@@ -6,17 +6,23 @@ from django.contrib.auth.models import User
 
 from .models import Profile, Skill
 from .forms import ProfileForm, SkillForm, CustomUserCreationForm
+from .utils import paginateProfiles, searchProfiles
 
 
+@login_required(login_url='login')
 def profiles(request):
-    profiles = Profile.objects.all()
+    profiles, search_query = searchProfiles(request)
+    custom_range, profiles = paginateProfiles(request, profiles, 6)
     context = {
-        'profiles': profiles
+        'profiles': profiles,
+        'search_query': search_query,
+        'custom_range': custom_range
     }
     
     return render(request, 'profiles.html', context)
 
 
+@login_required(login_url='login')
 def user_profile(request, pk):
     profile = Profile.objects.get(pk=pk)
     main_skills = profile.skills.all()[:2]
@@ -30,6 +36,7 @@ def user_profile(request, pk):
     return render(request, 'user_profile.html', context)
 
 
+@login_required(login_url='login')
 def profiles_by_skills(request, skill_slag):
     skill = get_object_or_404(Skill.objects.all(), slug=skill_slag)
     profiles = Profile.objects.filter(skills__in=[skill])
