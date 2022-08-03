@@ -123,7 +123,7 @@
                         </ul>
 
                         {% if request.user.profile.id != profile.id %}
-                        <button type="button" class="btn btn-outline-secondary" action="{% url 'create-message' profile.name %}">Create message</button>
+                        <a type="button" class="btn btn-outline-secondary" href="{% url 'create-message' profile.name %}">Create message</a>
                         {% endif %}
                       </div>
                       <!-- Card body END -->

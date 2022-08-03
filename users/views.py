@@ -208,7 +208,7 @@ def view_message(request, pk):
 
 
 def create_message(request, username):
-    recipient = Profile.objects.get(username=username)
+    recipient = Profile.objects.get(name=username)
     form = MessageForm()
 
     try:
@@ -229,7 +229,7 @@ def create_message(request, username):
             message.save()
 
             messages.success(request, 'Your message was successfully sent!')
-            return redirect('user-profile', username=recipient.username)
+            return redirect('profile', pk=recipient.name)
 
     context = {'recipient': recipient, 'form': form}
     return render(request, 'message_form.html', context)
