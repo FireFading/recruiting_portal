@@ -1,9 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-</form>
+<main class="container">
+    <h2 style="text-align: center;">New skill</h2>
+    <form method="POST" class="mt-4" style="text-align: right; margin-right: 200px;">
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div class="mb-3">
+            <label class="form-label" for="formInput#text">{{ field.label }}</label>
+            {{ field }}
+
+            {% for error in field.errors %}
+            <p style="color: red;">{{ error }}</p>
+            {% endfor %}
+
+        </div>
+        {% endfor %}
+
+        <div class="row align-items-center" style="margin-left: auto;">
+            <div class="col-sm-4" style="margin-left: 150px;">
+                <button type="submit" class="btn btn-secondary" style="width: 100%; margin: auto;">Add Skill</button>
+            </div>
+        </div>
+    </form>
+</main>
 
 {% endblock %}

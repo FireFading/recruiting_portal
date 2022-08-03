@@ -10,7 +10,7 @@
             <li><a href="{% url 'profiles' %}" class="nav-link px-2 text-secondary">Programmers</a></li>
             <li><a href="{% url 'projects' %}" class="nav-link px-2 text-white">Projects</a></li>
             {% if request.user.is_authenticated %}
-            <li><a href="#" class="nav-link px-2 text-white">Messages</a></li>
+            <li><a href="{% url 'inbox' %}" class="nav-link px-2 text-white">Messages</a></li>
             <li><a href="{% url 'account' %}" class="nav-link px-2 text-white">My Profile</a></li>
             {% endif %}
 

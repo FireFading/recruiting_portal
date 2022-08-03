@@ -24,7 +24,7 @@
                   <!-- Card body START -->
                   <div class="card-body">
                     <!-- Form settings START -->
-                    <form class="row g-3" method="POST" action="{% url 'edit-acount' %}">
+                    <form class="row g-3" method="POST" action="{% url 'edit-account' %}">
                         {% csrf_token %}
                       <!-- First name -->
                       <div class="col-sm-6 col-lg-4">
@@ -73,6 +73,9 @@
                       <div class="col-lg-6">
                         <label class="form-label">{{ form.skills.label }} </label>
                         {{ form.skills }}
+                      </div>
+                      <div class="col-lg-6" style="margin-top: 30px;">
+                        <a class="btn btn-secondary" href="{% url 'create-skill' %}">ADD Skill</a>
                       </div>
 
                       <!-- Page information -->

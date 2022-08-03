@@ -123,10 +123,9 @@
                         </ul>
 
                         {% if request.user.profile.id != profile.id %}
-                        <button type="button" class="btn btn-outline-secondary">Create message</button>
+                        <button type="button" class="btn btn-outline-secondary" action="{% url 'create-message' profile.name %}">Create message</button>
                         {% endif %}
                       </div>
-                      
                       <!-- Card body END -->
                     </div>
                   </div>
@@ -159,10 +158,6 @@
                                 {% endfor %}
                             {% endif %}
                         </ul>
-
-                        {% if request.user.profile.id != profile.id %}
-                        <button type="button" class="btn btn-outline-secondary">Create message</button>
-                        {% endif %}
                       </div>
                       
                       <!-- Card body END -->

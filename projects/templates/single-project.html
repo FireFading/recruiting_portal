@@ -1,19 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Detailed information about the project</h1>
-    <h3>Project #{{ project.id }}</h3>
-    <p>{{ project.title }}</p>
-    <img src="{{ project.image.url }}" />
+<main class="container">
+    <h1>{{ project.title }}</h1>
+    {% for tag in project.tags.all %}
+        <span class="badge rounded-pill bg-primary"><a href="{% url 'tag' tag.slug %}" style="color: white; text-decoration: none;">{{ tag }}</a></span>
+    {% endfor %}
     <br>
-    <ul>
-        {% for tag in project.tags.all %}
-        <li><a href="{% url 'tag' tag.slug %}" class="tag tag--pill tag--sub">{{ tag }}</a></li>
-        {% endfor %}
-    </ul>
+    <img src="{{ project.image.url }}" style="margin-left: 200px;"/>
+    <br>
+        
     <em>{{ project.description }}</em>
 
+    {{ form.as_p }}
+
+
+    {% for review in reviews %}
+        {{review.owner}}
+
+    {% endfor %}
+
     <a href="{% url 'delete-project' project.id %}">Delete project</a>
+
+</main>
 
 {% endblock %}
 

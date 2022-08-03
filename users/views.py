@@ -97,7 +97,7 @@ def create_skill(request):
 
 
 def register_user(request):
-    page = 'regiter'
+    page = 'register'
     form = CustomUserCreationForm()
     
     if request.method == 'POST':
@@ -106,9 +106,11 @@ def register_user(request):
             user = form.save(commit=False)
             user.username = user.username.lower()
             user.save()
-            
+            # profile = Profile.objects.create(user=user, name=user.username, email=user.email)
+            # profile.save()
+
             messages.success(request, 'Account successfully registered!')
-            login(request, user)            
+            login(request, user)
             return redirect('edit-account')
         else:
             messages.info(request, 'Something wrong, please try again')
@@ -117,7 +119,7 @@ def register_user(request):
         'form': form,
         'page': page
         }
-    return render(request, 'profile_form.html', context)
+    return render(request, 'login_register.html', context)
 
 
 @login_required(login_url='login')
@@ -194,7 +196,7 @@ def inbox(request):
 
 
 @login_required(login_url='login')
-def viewMessage(request, pk):
+def view_message(request, pk):
     profile = request.user.profile
     message = profile.messages.get(id=pk)
     if message.is_read == False:
@@ -205,7 +207,7 @@ def viewMessage(request, pk):
 
 
 
-def createMessage(request, username):
+def create_message(request, username):
     recipient = Profile.objects.get(username=username)
     form = MessageForm()
 

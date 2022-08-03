@@ -15,4 +15,6 @@ urlpatterns = [
     path('create-skill/', views.create_skill, name="create-skill"),
     path('update-skill/<slug:skill_slug>/', views.update_skill, name="update-skill"),
     path('delete-skill/<slug:skill_slug>/', views.delete_skill, name="delete-skill"),
+    path('inbox/', views.inbox, name="inbox"),
+    path('create-message/<str:username>', views.create_message, name="create-message"),
 ]

@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core import paginator
 
-from .models import Project, Tag
+from .models import Project, Tag, Review
 from .forms import ProjectForm, ReviewForm
 from .utils import paginateProjects, searchProjects
 
@@ -25,6 +25,7 @@ def all_projects(request):
 def project(request, pk):
     project = Project.objects.get(pk=pk)
     form = ReviewForm()
+    reviews = Review.objects.filter(project=project)
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         review = form.save(commit=False)
@@ -34,7 +35,11 @@ def project(request, pk):
         project.getVoteCount
         messages.success(request, 'Your review was successfully saved!')
         
-    context = {"project": project}
+    context = {
+        "project": project,
+        "form": form,
+        "reviews": reviews,
+    }
     return render(request, 'single-project.html', context)
 
 

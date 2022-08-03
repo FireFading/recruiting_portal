@@ -54,6 +54,7 @@ main {
     background-clip: border-box;
     border: 1px solid rgba(0, 0, 0, 0.09);
     border-radius: 0.4rem;
+    padding: 30px;
 }
 
 .g-4, .gy-4 {
