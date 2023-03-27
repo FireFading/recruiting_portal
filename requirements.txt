@@ -1,2 +1,5 @@
 Django
+django_environ
+gunicorn
 Pillow
+psycopg2-binary
