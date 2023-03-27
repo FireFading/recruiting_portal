@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
-from .models import Message, Profile, Skill
+from users.models import Message, Profile, Skill
 
 
 class ProfileForm(ModelForm):
@@ -35,7 +35,7 @@ class ProfileForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
-        for name, field in self.fields.items():
+        for _, field in self.fields.items():
             field.widget.attrs.update({"class": "input"})
             field.widget.attrs.update({"class": "form-control"})
 
@@ -48,7 +48,7 @@ class SkillForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(SkillForm, self).__init__(*args, **kwargs)
-        for name, field in self.fields.items():
+        for _, field in self.fields.items():
             field.widget.attrs.update({"class": "input"})
 
 
@@ -73,5 +73,5 @@ class MessageForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(MessageForm, self).__init__(*args, **kwargs)
-        for name, field in self.fields.items():
+        for _, field in self.fields.items():
             field.widget.attrs.update({"class": "input"})

@@ -3,23 +3,23 @@ from django.contrib.auth.decorators import login_required
 from django.core import paginator
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import ProjectForm, ReviewForm
+from projects.forms import ProjectForm, ReviewForm
 
-from .models import Project, Review, Tag
-from .utils import paginateProjects, searchProjects
+from projects.models import Project, Review, Tag
+from projects.utils import paginate_projects, search_projects
 
 
 @login_required(login_url="login")
 def all_projects(request):
-    projects, search_query = searchProjects(request)
-    custom_range, projects = paginateProjects(request, projects, 6)
+    projects, search_query = search_projects(request)
+    custom_range, projects = paginate_projects(request, projects, 6)
     context = {
         "projects": projects,
         "search_query": search_query,
         "custom_range": custom_range,
     }
 
-    return render(request, "projects.html", context)
+    return render(request, "projects/projects.html", context)
 
 
 @login_required(login_url="login")
@@ -33,7 +33,7 @@ def project(request, pk):
         review.project = project
         review.owner = request.user.profile
         review.save()
-        project.getVoteCount
+        project.get_vote_count
         messages.success(request, "Your review was successfully saved!")
 
     context = {
@@ -55,7 +55,7 @@ def create_project(request):
     context = {
         "form": form,
     }
-    return render(request, "project_form.html", context)
+    return render(request, "projects/project_form.html", context)
 
 
 @login_required(login_url="login")
@@ -71,7 +71,7 @@ def update_project(request, pk):
     context = {
         "form": form,
     }
-    return render(request, "project_form.html", context)
+    return render(request, "projects/project_form.html", context)
 
 
 @login_required(login_url="login")
@@ -82,7 +82,7 @@ def delete_project(request, pk):
         return redirect("projects")
 
     context = {"object": project}
-    return render(request, "delete.html", context)
+    return render(request, "projects/delete.html", context)
 
 
 @login_required(login_url="login")
@@ -91,4 +91,4 @@ def projects_by_tag(request, tag_slug):
     projects = Project.objects.filter(tags__in=[tag])
 
     context = {"projects": projects}
-    return render(request, "projects.html", context)
+    return render(request, "projects/projects.html", context)

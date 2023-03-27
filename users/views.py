@@ -4,23 +4,23 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import CustomUserCreationForm, MessageForm, ProfileForm, SkillForm
+from users.forms import CustomUserCreationForm, MessageForm, ProfileForm, SkillForm
 
-from .models import Profile, Skill
-from .utils import paginateProfiles, searchProfiles
+from users.models import Profile, Skill
+from users.utils import paginate_profiles, search_profiles
 
 
 @login_required(login_url="login")
 def profiles(request):
-    profiles, search_query = searchProfiles(request)
-    custom_range, profiles = paginateProfiles(request, profiles, 6)
+    profiles, search_query = search_profiles(request)
+    custom_range, profiles = paginate_profiles(request, profiles, 6)
     context = {
         "profiles": profiles,
         "search_query": search_query,
         "custom_range": custom_range,
     }
 
-    return render(request, "profiles.html", context)
+    return render(request, "users/profiles.html", context)
 
 
 @login_required(login_url="login")
@@ -34,7 +34,7 @@ def user_profile(request, pk):
         "main_skills": main_skills,
     }
 
-    return render(request, "user_profile.html", context)
+    return render(request, "users/user_profile.html", context)
 
 
 @login_required(login_url="login")
@@ -44,7 +44,7 @@ def profiles_by_skills(request, skill_slag):
     context = {
         "profiles": profiles,
     }
-    return render(request, "profiles.html", context)
+    return render(request, "users/profiles.html", context)
 
 
 @login_required(login_url="login")
@@ -58,7 +58,7 @@ def user_account(request):
         "skills": skills,
         "projects": projects,
     }
-    return render(request, "user_profile.html", context)
+    return render(request, "users/user_profile.html", context)
 
 
 @login_required(login_url="login")
@@ -75,7 +75,7 @@ def edit_account(request):
     context = {
         "form": form,
     }
-    return render(request, "profile_form.html", context)
+    return render(request, "users/profile_form.html", context)
 
 
 @login_required(login_url="login")
@@ -96,7 +96,7 @@ def create_skill(request):
             return redirect("account")
 
     context = {"form": form}
-    return render(request, "skill_form.html", context)
+    return render(request, "users/skill_form.html", context)
 
 
 def register_user(request):
@@ -119,7 +119,7 @@ def register_user(request):
             messages.info(request, "Something wrong, please try again")
 
     context = {"form": form, "page": page}
-    return render(request, "login_register.html", context)
+    return render(request, "users/login_register.html", context)
 
 
 @login_required(login_url="login")
@@ -130,7 +130,7 @@ def delete_skill(request, skill_slug):
         return redirect("account")
 
     context = {"object": skill}
-    return render(request, "delete.html", context)
+    return render(request, "users/delete.html", context)
 
 
 @login_required(login_url="login")
@@ -146,7 +146,7 @@ def update_skill(request, skill_slug):
     context = {
         "form": form,
     }
-    return render(request, "skill_form.html", context)
+    return render(request, "users/skill_form.html", context)
 
 
 def login_user(request):
@@ -160,7 +160,7 @@ def login_user(request):
 
         try:
             user = User.objects.get(username=username)
-        except:
+        except Exception:
             messages.error(request, "User doesn't exist")
 
         user = authenticate(request, username=username, password=password)
@@ -172,7 +172,7 @@ def login_user(request):
         else:
             messages.error(request, "Wrong username or password")
     context = {"page": page}
-    return render(request, "login_register.html", context)
+    return render(request, "users/login_register.html", context)
 
 
 @login_required(login_url="login")
@@ -188,7 +188,7 @@ def inbox(request):
     messageRequests = profile.messages.all()
     unreadCount = messageRequests.filter(is_read=False).count()
     context = {"messageRequests": messageRequests, "unreadCount": unreadCount}
-    return render(request, "inbox.html", context)
+    return render(request, "users/inbox.html", context)
 
 
 @login_required(login_url="login")
@@ -199,7 +199,7 @@ def view_message(request, pk):
         message.is_read = True
         message.save()
     context = {"message": message}
-    return render(request, "message.html", context)
+    return render(request, "users/message.html", context)
 
 
 def create_message(request, username):
@@ -208,7 +208,7 @@ def create_message(request, username):
 
     try:
         sender = request.user.profile
-    except:
+    except Exception:
         sender = None
 
     if request.method == "POST":
@@ -227,4 +227,4 @@ def create_message(request, username):
             return redirect("profile", pk=recipient.name)
 
     context = {"recipient": recipient, "form": form}
-    return render(request, "message_form.html", context)
+    return render(request, "users/message_form.html", context)
