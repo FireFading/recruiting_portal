@@ -1,11 +1,11 @@
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from .models import Project, Tag
 
 
 def paginateProjects(request, projects, results):
-    page = request.GET.get('page')
+    page = request.GET.get("page")
     paginator = Paginator(projects, results)
 
     try:
@@ -17,10 +17,10 @@ def paginateProjects(request, projects, results):
         page = paginator.num_pages
         projects = paginator.page(page)
 
-    leftIndex = (int(page) - 4)
+    leftIndex = int(page) - 4
 
     leftIndex = max(leftIndex, 1)
-    rightIndex = (int(page) + 5)
+    rightIndex = int(page) + 5
 
     if rightIndex > paginator.num_pages:
         rightIndex = paginator.num_pages + 1
@@ -31,15 +31,13 @@ def paginateProjects(request, projects, results):
 
 
 def searchProjects(request):
-    search_query = request.GET.get('search_query') or ''
+    search_query = request.GET.get("search_query") or ""
     tags = Tag.objects.filter(name__icontains=search_query)
 
     projects = Project.objects.distinct().filter(
-        Q(title__icontains=search_query) |
-        Q(description__icontains=search_query) |
-        Q(owner__name__icontains=search_query) |
-        Q(tags__in=tags)
+        Q(title__icontains=search_query)
+        | Q(description__icontains=search_query)
+        | Q(owner__name__icontains=search_query)
+        | Q(tags__in=tags)
     )
     return projects, search_query
-
-
